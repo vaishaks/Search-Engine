@@ -48,7 +48,18 @@ def lookup(index,keyword):  #Returns list of urls corresponding to given keyword
         return index[keyword]
     else:
         return []   #If keyword is not indexed it returns an empty list
-    
+
+def search(query):
+    keywords = query.split() #Each query is split into keywords
+    urls = []
+    search_result = []
+    for keyword in keywords:
+        urls = lookup(index,keyword)    #URLs indexed for every keyword is looked up
+        for url in urls:
+            if url not in search_result:    #Each URL occurs in list just once
+                search_result.append(url)
+    return search_result
+  
 def crawl_web(seed):
     to_crawl = [seed]   #Frontier queue which stores links that are to be crawled
     crawled = []    #Repository queue which stores links that have been crawled
@@ -65,4 +76,5 @@ def crawl_web(seed):
     
 
 print crawl_web("http://www.udacity.com/cs101x/index.html") 
+print search('I am idea enough')
        
