@@ -6,6 +6,7 @@ from urllib import urlopen
 from bs4 import BeautifulSoup
 
 index = {}  #Index is of type dict
+splitlist = [' ','"',"'",'.',',','!','-']
 def get_next_target(page):
     start_link = page.find('<a')    #Find anchor tag
     if start_link == -1:
@@ -40,10 +41,16 @@ def add_to_index(index,keyword,url):
     else:
         index.setdefault(keyword,[url]) #add new index
         
+def split_string(source,splitlist):
+    for i in xrange(0,len(splitlist)):
+        source = source.replace(splitlist[i]," ") 
+    result = source.split()
+    return result
+
 def add_page_to_index(index,url,content):
     soup = BeautifulSoup(content)   #Using BeautifulSoup html is parsed to get only text
     html_text = soup.get_text()
-    words = html_text.split() #Split the content into words
+    words = split_string(html_text,splitlist) #Split the content into words
     for word in words:
         add_to_index(index,word,url) #Index each word with urls in which it occurs
 
@@ -77,7 +84,5 @@ def crawl_web(seed):
         crawled.append(crawl_link)
     return index
             
-    
-
 print crawl_web("http://www.udacity.com/cs101x/index.html") 
-print search('I am idea enough')
+print search('I am learning')
