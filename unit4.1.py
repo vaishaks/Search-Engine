@@ -5,8 +5,10 @@ Web Crawler
 from urllib import urlopen
 from bs4 import BeautifulSoup
 
-index = {}  #Index is of type dict
-splitlist = [' ','"',"'",'.',',','!','-']
+#Index is of type dict
+index = {}  
+#List of characters that are used as seperators while splitting a string into words
+splitlist = [' ','"',"'",'.',',','!','-'] 
 def get_next_target(page):
     start_link = page.find('<a')    #Find anchor tag
     if start_link == -1:
@@ -41,10 +43,11 @@ def add_to_index(index,keyword,url):
     else:
         index.setdefault(keyword,[url]) #add new index
         
-def split_string(source,splitlist):
-    for i in xrange(0,len(splitlist)):
+def split_string(source,splitlist): #Effecient splitting of the content of the page into words
+    for i in xrange(0,len(splitlist)):  
+        #Every character in the splitlist present in the string is replaced by ' '
         source = source.replace(splitlist[i]," ") 
-    result = source.split()
+    result = source.split() #Normal splitting is done
     return result
 
 def add_page_to_index(index,url,content):
